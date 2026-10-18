@@ -1,62 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demon X AI</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #080810; color: white; min-height: 100vh; }
-    header { padding: 22px 7%; border-bottom: 1px solid #252535; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 25px; font-weight: bold; color: #ff3030; }
-    .badge { color: #aaa; font-size: 12px; border: 1px solid #383848; padding: 8px 12px; border-radius: 20px; }
-    main { max-width: 850px; margin: 90px auto; padding: 20px; text-align: center; }
-    h1 { font-size: clamp(36px, 7vw, 60px); margin-bottom: 18px; }
-    h1 span { color: #ff3030; }
-    .subtitle { color: #aaaabb; font-size: 16px; line-height: 1.7; margin-bottom: 35px; }
-    .box { background: #11111d; border: 1px solid #333347; border-radius: 18px; padding: 18px; text-align: left; }
-    textarea { width: 100%; min-height: 140px; background: transparent; border: none; outline: none; resize: vertical; color: white; font-size: 16px; font-family: inherit; }
-    textarea::placeholder { color: #777789; }
-    .bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 15px; }
-    .hint { color: #777789; font-size: 12px; }
-    button { background: #ff3030; color: white; border: none; border-radius: 10px; padding: 13px 22px; font-size: 15px; font-weight: bold; cursor: pointer; }
-    button:hover { background: #e51f1f; }
-    #result { display: none; margin-top: 25px; padding: 20px; background: #11111d; border: 1px solid #333347; border-radius: 14px; text-align: left; line-height: 1.7; overflow-wrap: anywhere; }
-    #result h2 { color: #ff5050; margin-bottom: 10px; }
-    footer { color: #666677; text-align: center; padding: 25px; font-size: 12px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demon X AI</title>
+<style>
+:root{--bg:#090909;--card:#151515;--red:#ff2438;--text:#f5f5f5;--muted:#aaa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 6%;border-bottom:1px solid #292929}
+.logo{font-size:23px;font-weight:900;color:var(--red)}
+.badge{font-size:12px;border:1px solid #444;padding:7px 10px;border-radius:20px}
+main{max-width:900px;margin:55px auto;padding:0 18px}
+.hero{text-align:center;margin-bottom:35px}
+h1{font-size:clamp(34px,8vw,60px);margin:0 0 15px}
+h1 span{color:var(--red)}
+.hero p{color:var(--muted);line-height:1.6}
+.panel{background:var(--card);border:1px solid #303030;border-radius:18px;padding:20px;margin-bottom:20px}
+label{display:block;font-weight:bold;margin-bottom:12px}
+textarea{width:100%;min-height:125px;background:#090909;color:white;border:1px solid #393939;border-radius:12px;padding:15px;font:16px Arial;resize:vertical}
+textarea:focus{outline:1px solid var(--red)}
+button{border:0;border-radius:10px;padding:13px 17px;font-weight:bold;cursor:pointer}
+.primary{width:100%;background:var(--red);color:white;margin-top:13px}
+.secondary{background:#292929;color:white}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}
+h2{font-size:19px;margin-top:0}
+#preview{background:#090909;border:1px dashed #444;border-radius:12px;min-height:130px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere;color:#ddd;line-height:1.5}
+.note{font-size:12px;color:var(--muted);line-height:1.6}
+footer{text-align:center;padding:30px;color:#777;font-size:12px}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">😈 DEMON X AI</div>
-    <div class="badge">AI APP BUILDER</div>
-  </header>
-  <main>
-    <h1>Build Anything With <span>AI</span></h1>
-    <p class="subtitle">Describe your dream website or app.<br>Your AI creation journey starts here.</p>
-    <div class="box">
-      <textarea id="prompt" placeholder="Describe your app... Example: Create a modern shopping website with products and a cart."></textarea>
-      <div class="bottom">
-        <span class="hint">Your ideas. Your creations.</span>
-        <button onclick="generateApp()">Generate App ↗</button>
-      </div>
+<header>
+  <div class="logo">😈 DEMON X AI</div>
+  <div class="badge">AI APP BUILDER · BETA</div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Build Apps with <span>AI</span></h1>
+    <p>Describe your idea. Start building your next project.</p>
+  </section>
+
+  <section class="panel">
+    <label for="prompt">What do you want to build?</label>
+    <textarea id="prompt" placeholder="Example: Create a modern gaming website with a dark theme..."></textarea>
+    <button class="primary" id="generate">✦ Generate Project Plan</button>
+    <p class="note">Demo mode: this creates a local project plan, not AI-generated code.</p>
+  </section>
+
+  <section class="panel">
+    <h2>⚡ Project Preview</h2>
+    <div id="preview">Your project plan will appear here.</div>
+    <div class="row">
+      <button class="secondary" id="copy">Copy Plan</button>
+      <button class="secondary" id="download">⬇ Download Plan</button>
+      <button class="secondary" id="clear">Clear</button>
     </div>
-    <div id="result" aria-live="polite">
-      <h2>Your Idea</h2>
-      <p id="output"></p>
-      <br>
-      <p style="color:#aaaabb;font-size:13px;">This is the first version of Demon X AI. A real AI model will be connected in a later step.</p>
-    </div>
-  </main>
-  <footer>© 2026 Demon X AI · Built for creators</footer>
-  <script>
-    function generateApp() {
-      const prompt = document.getElementById("prompt").value.trim();
-      if (!prompt) { alert("Please describe the app you want to create!"); return; }
-      document.getElementById("output").textContent = prompt;
-      document.getElementById("result").style.display = "block";
-      document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  </script>
+  </section>
+
+  <p class="note">Privacy: your prompt stays in this browser page. No AI service is connected yet.</p>
+</main>
+
+<footer>DEMON X AI © 2026 · Built for creators</footer>
+
+<script>
+const promptBox = document.getElementById("prompt");
+const preview = document.getElementById("preview");
+
+document.getElementById("generate").addEventListener("click", () => {
+  const prompt = promptBox.value.trim();
+  if (!prompt) {
+    preview.textContent = "Please describe your app idea first.";
+    promptBox.focus();
+    return;
+  }
+
+  preview.textContent =
+`DEMON X AI — PROJECT PLAN
+
+Your idea:
+${prompt}
+
+Suggested next steps:
+1. Define the app's main features.
+2. Design the user interface.
+3. Build the frontend.
+4. Connect a backend or AI service if needed.
+5. Test the app before publishing.
+
+Note: This is a demo plan. It is not AI-generated code.`;
+});
+
+document.getElementById("copy").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(preview.textContent);
+    alert("Project plan copied!");
+  } catch {
+    alert("Copy isn't available here. You can select and copy the preview text manually.");
+  }
+});
+
+document.getElementById("download").addEventListener("click", () => {
+  const blob = new Blob([preview.textContent], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "demon-x-ai-project-plan.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById("clear").addEventListener("click", () => {
+  promptBox.value = "";
+  preview.textContent = "Your project plan will appear here.";
+});
+</script>
 </body>
 </html>
