@@ -3,33 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Demon X AI</title>
+<title>Demon X AI — AI App Builder</title>
+
 <style>
-:root{--bg:#090909;--card:#151515;--red:#ff2438;--text:#f5f5f5;--muted:#aaa}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-header{display:flex;justify-content:space-between;align-items:center;padding:20px 6%;border-bottom:1px solid #292929}
-.logo{font-size:23px;font-weight:900;color:var(--red)}
-.badge{font-size:12px;border:1px solid #444;padding:7px 10px;border-radius:20px}
-main{max-width:900px;margin:55px auto;padding:0 18px}
-.hero{text-align:center;margin-bottom:35px}
-h1{font-size:clamp(34px,8vw,60px);margin:0 0 15px}
-h1 span{color:var(--red)}
-.hero p{color:var(--muted);line-height:1.6}
-.panel{background:var(--card);border:1px solid #303030;border-radius:18px;padding:20px;margin-bottom:20px}
-label{display:block;font-weight:bold;margin-bottom:12px}
-textarea{width:100%;min-height:125px;background:#090909;color:white;border:1px solid #393939;border-radius:12px;padding:15px;font:16px Arial;resize:vertical}
-textarea:focus{outline:1px solid var(--red)}
-button{border:0;border-radius:10px;padding:13px 17px;font-weight:bold;cursor:pointer}
-.primary{width:100%;background:var(--red);color:white;margin-top:13px}
-.secondary{background:#292929;color:white}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}
-h2{font-size:19px;margin-top:0}
-#preview{background:#090909;border:1px dashed #444;border-radius:12px;min-height:130px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere;color:#ddd;line-height:1.5}
-.note{font-size:12px;color:var(--muted);line-height:1.6}
-footer{text-align:center;padding:30px;color:#777;font-size:12px}
+:root {
+  --bg:#090909;
+  --card:#151515;
+  --red:#ff2438;
+  --text:#f5f5f5;
+  --muted:#aaa;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 6%;
+  border-bottom:1px solid #292929;
+  gap:12px;
+}
+.logo { font-size:23px;font-weight:900;color:var(--red); }
+.badge {
+  font-size:12px;
+  border:1px solid #444;
+  padding:7px 10px;
+  border-radius:20px;
+}
+main { max-width:1000px;margin:45px auto;padding:0 18px; }
+.hero { text-align:center;margin-bottom:35px; }
+h1 { font-size:clamp(34px,8vw,60px);margin:0 0 15px; }
+h1 span { color:var(--red); }
+.hero p,.note { color:var(--muted);line-height:1.6; }
+.panel {
+  background:var(--card);
+  border:1px solid #303030;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:20px;
+}
+label { display:block;font-weight:bold;margin-bottom:12px; }
+textarea {
+  width:100%;
+  min-height:125px;
+  background:#090909;
+  color:white;
+  border:1px solid #393939;
+  border-radius:12px;
+  padding:15px;
+  font:16px Arial;
+  resize:vertical;
+}
+button {
+  border:0;
+  border-radius:10px;
+  padding:13px 17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:disabled { opacity:.6;cursor:wait; }
+.primary { width:100%;background:var(--red);color:white;margin-top:13px; }
+.secondary { background:#292929;color:white; }
+.row { display:flex;gap:10px;flex-wrap:wrap;margin-top:13px; }
+h2 { font-size:19px;margin-top:0; }
+#status {
+  color:#ff7582;
+  font-size:14px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+#preview {
+  background:#090909;
+  border:1px dashed #444;
+  border-radius:12px;
+  min-height:150px;
+  padding:16px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  color:#ddd;
+  line-height:1.5;
+}
+#appFrame {
+  width:100%;
+  height:450px;
+  border:1px solid #393939;
+  border-radius:12px;
+  background:white;
+}
+.hidden { display:none; }
+.note { font-size:12px; }
+footer { text-align:center;padding:30px;color:#777;font-size:12px; }
 </style>
 </head>
+
 <body>
 <header>
   <div class="logo">😈 DEMON X AI</div>
@@ -39,81 +110,153 @@ footer{text-align:center;padding:30px;color:#777;font-size:12px}
 <main>
   <section class="hero">
     <h1>Build Apps with <span>AI</span></h1>
-    <p>Describe your idea. Start building your next project.</p>
+    <p>Describe your idea. Let AI generate your app.</p>
   </section>
 
   <section class="panel">
     <label for="prompt">What do you want to build?</label>
-    <textarea id="prompt" placeholder="Example: Create a modern gaming website with a dark theme..."></textarea>
-    <button class="primary" id="generate">✦ Generate Project Plan</button>
-    <p class="note">Demo mode: this creates a local project plan, not AI-generated code.</p>
+    <textarea id="prompt" placeholder="Example: Create a modern gaming website with a dark theme, animations and a contact form..."></textarea>
+    <button class="primary" id="generate">✦ Generate App with AI</button>
+    <p class="note">Your request is sent to the Demon X AI backend to generate code.</p>
+    <p id="status" role="status"></p>
   </section>
 
   <section class="panel">
-    <h2>⚡ Project Preview</h2>
-    <div id="preview">Your project plan will appear here.</div>
+    <h2>⚡ Generated Code</h2>
+    <pre id="preview">Your AI-generated HTML code will appear here.</pre>
     <div class="row">
-      <button class="secondary" id="copy">Copy Plan</button>
-      <button class="secondary" id="download">⬇ Download Plan</button>
+      <button class="secondary" id="copy">📋 Copy Code</button>
+      <button class="secondary" id="download">⬇ Download HTML</button>
+      <button class="secondary" id="showPreview">👁 Live Preview</button>
       <button class="secondary" id="clear">Clear</button>
     </div>
   </section>
 
-  <p class="note">Privacy: your prompt stays in this browser page. No AI service is connected yet.</p>
+  <section class="panel hidden" id="previewPanel">
+    <h2>🌐 App Preview</h2>
+    <iframe
+      id="appFrame"
+      title="Generated app preview"
+      sandbox="allow-forms allow-scripts"
+      referrerpolicy="no-referrer">
+    </iframe>
+    <p class="note">Preview runs in an isolated frame. Only run code you trust.</p>
+  </section>
 </main>
 
 <footer>DEMON X AI © 2026 · Built for creators</footer>
 
 <script>
+const API_URL = "https://demon-x-ai-api.usachannelff.workers.dev/api/generate";
+
 const promptBox = document.getElementById("prompt");
 const preview = document.getElementById("preview");
+const statusBox = document.getElementById("status");
+const generateButton = document.getElementById("generate");
+const previewPanel = document.getElementById("previewPanel");
+const appFrame = document.getElementById("appFrame");
 
-document.getElementById("generate").addEventListener("click", () => {
+let generatedCode = "";
+
+generateButton.addEventListener("click", async () => {
   const prompt = promptBox.value.trim();
+
   if (!prompt) {
-    preview.textContent = "Please describe your app idea first.";
+    statusBox.textContent = "Please describe your app idea first.";
     promptBox.focus();
     return;
   }
 
-  preview.textContent =
-`DEMON X AI — PROJECT PLAN
+  generateButton.disabled = true;
+  generateButton.textContent = "Generating...";
+  statusBox.textContent = "Connecting to Gemini AI...";
+  preview.textContent = "Generating your app code...";
+  generatedCode = "";
+  previewPanel.classList.add("hidden");
 
-Your idea:
-${prompt}
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
 
-Suggested next steps:
-1. Define the app's main features.
-2. Design the user interface.
-3. Build the frontend.
-4. Connect a backend or AI service if needed.
-5. Test the app before publishing.
+    const data = await response.json();
 
-Note: This is a demo plan. It is not AI-generated code.`;
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || data.message || "AI request failed.");
+    }
+
+    if (typeof data.code !== "string" || !data.code.trim()) {
+      throw new Error("AI returned empty code. Please try another prompt.");
+    }
+
+    generatedCode = data.code.trim()
+      .replace(/^```(?:html)?\s*/i, "")
+      .replace(/\s*```$/, "");
+
+    preview.textContent = generatedCode;
+    statusBox.textContent = "✅ Code generated successfully!";
+  } catch (error) {
+    preview.textContent = "Generation failed.";
+    statusBox.textContent =
+      "❌ " + error.message +
+      "\n\nCheck that the Worker is deployed and its GEMINI_API_KEY secret is configured.";
+  } finally {
+    generateButton.disabled = false;
+    generateButton.textContent = "✦ Generate App with AI";
+  }
 });
 
 document.getElementById("copy").addEventListener("click", async () => {
+  if (!generatedCode) {
+    alert("Generate an app first.");
+    return;
+  }
+
   try {
-    await navigator.clipboard.writeText(preview.textContent);
-    alert("Project plan copied!");
+    await navigator.clipboard.writeText(generatedCode);
+    alert("HTML code copied!");
   } catch {
-    alert("Copy isn't available here. You can select and copy the preview text manually.");
+    alert("Copy unavailable. Please select the code and copy it manually.");
   }
 });
 
 document.getElementById("download").addEventListener("click", () => {
-  const blob = new Blob([preview.textContent], {type:"text/plain;charset=utf-8"});
+  if (!generatedCode) {
+    alert("Generate an app first.");
+    return;
+  }
+
+  const blob = new Blob([generatedCode], {
+    type:"text/html;charset=utf-8"
+  });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "demon-x-ai-project-plan.txt";
+  a.download = "demon-x-ai-app.html";
   a.click();
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+document.getElementById("showPreview").addEventListener("click", () => {
+  if (!generatedCode) {
+    alert("Generate an app first.");
+    return;
+  }
+
+  appFrame.srcdoc = generatedCode;
+  previewPanel.classList.remove("hidden");
+  previewPanel.scrollIntoView({ behavior:"smooth", block:"start" });
 });
 
 document.getElementById("clear").addEventListener("click", () => {
   promptBox.value = "";
-  preview.textContent = "Your project plan will appear here.";
+  generatedCode = "";
+  preview.textContent = "Your AI-generated HTML code will appear here.";
+  statusBox.textContent = "";
+  appFrame.srcdoc = "";
+  previewPanel.classList.add("hidden");
 });
 </script>
 </body>
